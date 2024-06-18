@@ -9,7 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 type LoginPayload = {
   login: string;
@@ -18,6 +18,7 @@ type LoginPayload = {
 
 const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector(
     (state: RootState) => state.auth
   ) as AuthState;
@@ -31,8 +32,16 @@ const LoginForm: React.FC = () => {
       login: Yup.string().required("Login is required"),
       password: Yup.string().required("Password is required"),
     }),
-    onSubmit: (values: LoginPayload) => {
-      dispatch(loginUser(values));
+    onSubmit: async (values: LoginPayload) => {
+      try {
+        const data = await dispatch(loginUser(values));
+        if (data) {
+          navigate("/");
+          console.log(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 

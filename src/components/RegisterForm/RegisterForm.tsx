@@ -36,7 +36,7 @@ const RegisterForm: React.FC = () => {
         const data = await dispatch(registerUser(values));
         if (data) {
           navigate("/");
-          console.log(data);
+          
         }
       } catch (error) {
         console.error(error);
