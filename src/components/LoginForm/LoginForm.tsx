@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { Link } from "react-router-dom";
 
 type LoginPayload = {
   login: string;
@@ -72,8 +73,9 @@ const LoginForm: React.FC = () => {
           sx={{ mt: 3, mb: 2 }}
           disabled={loading}
         >
-          Login
+          Войти
         </Button>
+        <Link to="/register">Заргеистрироваться</Link>
         {error && <Typography color="error">{error}</Typography>}
       </Box>
     

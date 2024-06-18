@@ -5,7 +5,7 @@ import './LoginPage.css';
 const LoginPage: React.FC = () => {
     return (
         <main className='login'>
-            <h1>Login</h1>
+            <h1>Логин</h1>
             <LoginForm />
         </main>
     );

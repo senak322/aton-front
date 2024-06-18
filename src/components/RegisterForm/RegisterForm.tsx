@@ -9,9 +9,11 @@ import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterForm: React.FC = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useSelector((state: RootState) => state.auth);
 
   const formik = useFormik({
@@ -25,20 +27,28 @@ const RegisterForm: React.FC = () => {
       login: Yup.string().required("Login is required"),
       password: Yup.string().required("Password is required"),
     }),
-    onSubmit: (values: {
+    onSubmit: async (values: {
       fullName: string;
       login: string;
       password: string;
     }) => {
-      dispatch(registerUser(values));
+      try {
+        const data = await dispatch(registerUser(values));
+        if (data) {
+          navigate("/");
+          console.log(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
   });
 
   return (
     <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
-      <Typography variant="h5" component="h1" gutterBottom>
+      {/* <Typography variant="h5" component="h1" gutterBottom>
         Register
-      </Typography>
+      </Typography> */}
       <TextField
         fullWidth
         margin="normal"
@@ -81,8 +91,9 @@ const RegisterForm: React.FC = () => {
         sx={{ mt: 3, mb: 2 }}
         disabled={loading}
       >
-        Register
+        Зарегистрироваться
       </Button>
+      <Link to="/login">Login</Link>
       {error && <Typography color="error">{error}</Typography>}
     </Box>
   );

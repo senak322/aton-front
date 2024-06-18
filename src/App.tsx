@@ -12,10 +12,10 @@ const App: React.FC = () => {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route
-            path="/clients"
+            path="/"
             element={
               <ProtectedRoute>
                 <ClientsPage />
