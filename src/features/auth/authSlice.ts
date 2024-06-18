@@ -18,7 +18,18 @@ const initialState: AuthState = {
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials: { login: string; password: string }) => {
-    const response = await axios.post("http://localhost:5000/api/users/login", credentials);
+    const response = await axios.post(
+      "http://localhost:5000/api/users/login",
+      credentials
+    );
+    return response.data;
+  }
+);
+
+export const registerUser = createAsyncThunk(
+  "http://localhost:5000/api/auth/registerUser",
+  async (userData: { fullName: string; login: string; password: string }) => {
+    const response = await axios.post("/api/register", userData);
     return response.data;
   }
 );
@@ -46,6 +57,19 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message || "Failed to login";
+      })
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.token = action.payload.token;
+        state.user = jwt_decode(action.payload.token);
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to register";
       });
   },
 });

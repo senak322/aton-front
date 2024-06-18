@@ -5,6 +5,7 @@ import { store } from "./store/store";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import ClientsPage from "./pages/ClientsPage/ClientsPage";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
 const App: React.FC = () => {
   return (
@@ -12,6 +13,7 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route
             path="/clients"
             element={

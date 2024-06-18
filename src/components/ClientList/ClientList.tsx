@@ -5,6 +5,17 @@ import {
   updateClientStatus,
 } from "../../features/clients/clientsSlice";
 import { RootState } from "../../store/store";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
 import { useAppDispatch } from "../../hooks/useAppDispatch";
 
 const ClientList: React.FC = () => {
@@ -21,50 +32,61 @@ const ClientList: React.FC = () => {
     dispatch(updateClientStatus({ id, status }));
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
   if (error) return <p>{error}</p>;
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Account Number</th>
-          <th>Last Name</th>
-          <th>First Name</th>
-          <th>Middle Name</th>
-          <th>Date of Birth</th>
-          <th>Tax ID</th>
-          <th>Responsible Person</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {clients.map((client) => (
-          <tr key={client._id}>
-            <td>{client.accountNumber}</td>
-            <td>{client.lastName}</td>
-            <td>{client.firstName}</td>
-            <td>{client.middleName}</td>
-            <td>{new Date(client.dateOfBirth).toLocaleDateString()}</td>
-            <td>{client.taxId}</td>
-            <td>{client.responsiblePerson}</td>
-            <td>{client.status}</td>
-            <td>
-              <select
-                value={client.status}
-                onChange={(e) => handleStatusChange(client._id, e.target.value)}
-              >
-                <option value="Не в работе">Не в работе</option>
-                <option value="В работе">В работе</option>
-                <option value="Отказ">Отказ</option>
-                <option value="Сделка закрыта">Сделка закрыта</option>
-              </select>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Account Number</TableCell>
+            <TableCell>Last Name</TableCell>
+            <TableCell>First Name</TableCell>
+            <TableCell>Middle Name</TableCell>
+            <TableCell>Date of Birth</TableCell>
+            <TableCell>Tax ID</TableCell>
+            <TableCell>Responsible Person</TableCell>
+            <TableCell>Status</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {clients.map((client) => (
+            <TableRow key={client._id}>
+              <TableCell>{client.accountNumber}</TableCell>
+              <TableCell>{client.lastName}</TableCell>
+              <TableCell>{client.firstName}</TableCell>
+              <TableCell>{client.middleName}</TableCell>
+              <TableCell>
+                {new Date(client.dateOfBirth).toLocaleDateString()}
+              </TableCell>
+              <TableCell>{client.taxId}</TableCell>
+              <TableCell>{client.responsiblePerson}</TableCell>
+              <TableCell>{client.status}</TableCell>
+              <TableCell>
+                <Select
+                  value={client.status}
+                  onChange={(e) =>
+                    handleStatusChange(client._id, e.target.value as string)
+                  }
+                >
+                  <MenuItem value="Не в работе">Не в работе</MenuItem>
+                  <MenuItem value="В работе">В работе</MenuItem>
+                  <MenuItem value="Отказ">Отказ</MenuItem>
+                  <MenuItem value="Сделка закрыта">Сделка закрыта</MenuItem>
+                </Select>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
